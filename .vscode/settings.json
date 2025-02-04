@@ -1,0 +1,5 @@
+{
+    "cody.commandHints.enabled": false,
+    "cody.codeActions.enabled": false,
+    "cody.autocomplete.completeSuggestWidgetSelection": false
+}
