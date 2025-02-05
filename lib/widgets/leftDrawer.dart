@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:widgets_test/constants/leftDrawerMenu.dart';
-import 'package:widgets_test/models/announcement.dart';
 
 class LeftDrawer extends StatefulWidget {
   const LeftDrawer({super.key});
@@ -27,7 +27,10 @@ class _LeftDrawerState extends State<LeftDrawer> {
             return MaterialButton(
               hoverColor: Color(0xFFF7941D),
               animationDuration: Duration(milliseconds: 300),
-              onPressed: () {},
+              onPressed: () {
+                context.go('/${listDrawer.route}');
+                Scaffold.of(context).closeDrawer();
+              },
               child: ListTile(
                 mouseCursor: SystemMouseCursors.click,
                 title: listDrawer.subtitle.toString().isEmpty

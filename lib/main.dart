@@ -1,15 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:widgets_test/screens/homepage.dart';
+import 'package:widgets_test/screens/bannerPage.dart';
+import 'package:widgets_test/screens/dashboardPage.dart';
+import 'package:widgets_test/screens/homePage.dart';
+import 'package:widgets_test/screens/locationPage.dart';
+import 'package:widgets_test/screens/mapPage.dart';
+import 'package:widgets_test/screens/messageManagementPage.dart';
+import 'package:widgets_test/screens/reportPage.dart';
 import 'package:widgets_test/widgets/appBar.dart';
 import 'package:widgets_test/widgets/leftDrawer.dart';
 
 void main() {
   runApp(MyApp());
 }
-
-enum SampleItem { Thai, English }
 
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -21,21 +25,89 @@ class CustomScrollBehavior extends MaterialScrollBehavior {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   final GoRouter _router = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(
-        path: '/',
-        builder: (context, state) => Scaffold(
-          backgroundColor: Color(0xFFf5f5f5),
-          drawer: LeftDrawer(),
-          appBar: AppBarScreen(),
-          body: Center(
-            child: const Homepage(),
-          ),
-        ),
-      ),
+          path: '/',
+          builder: (context, state) => Scaffold(
+                backgroundColor: Color(0xFFf5f5f5),
+                drawer: LeftDrawer(),
+                appBar: AppBarScreen(),
+                body: Center(
+                  child: HomePage(),
+                ),
+              ),
+          routes: [
+            GoRoute(
+              path: 'banner',
+              builder: (context, state) => Scaffold(
+                backgroundColor: Color(0xFFf5f5f5),
+                drawer: LeftDrawer(),
+                appBar: AppBarScreen(),
+                body: Center(
+                  child: const BannerPage(),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'report',
+              builder: (context, state) => Scaffold(
+                backgroundColor: Color(0xFFf5f5f5),
+                drawer: LeftDrawer(),
+                appBar: AppBarScreen(),
+                body: Center(
+                  child: const ReportPage(),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'message_manage',
+              builder: (context, state) => Scaffold(
+                backgroundColor: Color(0xFFf5f5f5),
+                drawer: LeftDrawer(),
+                appBar: AppBarScreen(),
+                body: Center(
+                  child: const MessageManagementPage(),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'location',
+              builder: (context, state) => Scaffold(
+                backgroundColor: Color(0xFFf5f5f5),
+                drawer: LeftDrawer(),
+                appBar: AppBarScreen(),
+                body: Center(
+                  child: const LocationPage(),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'dashboard',
+              builder: (context, state) => Scaffold(
+                backgroundColor: Color(0xFFf5f5f5),
+                drawer: LeftDrawer(),
+                appBar: AppBarScreen(),
+                body: Center(
+                  child: const DashboardPage(),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'map',
+              builder: (context, state) => Scaffold(
+                backgroundColor: Color(0xFFf5f5f5),
+                drawer: LeftDrawer(),
+                appBar: AppBarScreen(),
+                body: Center(
+                  child: const MapPage(),
+                ),
+              ),
+            ),
+          ]),
       // Add more routes here as needed
     ],
   );

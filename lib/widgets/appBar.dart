@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:widgets_test/models/announcement.dart';
 import 'package:widgets_test/models/language.dart';
 
 class AppBarScreen extends StatefulWidget implements PreferredSizeWidget {
-  const AppBarScreen({super.key});
+  AppBarScreen({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   State<AppBarScreen> createState() => _AppBarScreenState();
@@ -15,7 +17,6 @@ class AppBarScreen extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppBarScreenState extends State<AppBarScreen> {
   late String dateNumber;
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   void initState() {
@@ -35,9 +36,9 @@ class _AppBarScreenState extends State<AppBarScreen> {
   @override
   Widget build(BuildContext context) {
     // List<String> languages = ["Thai", "English"];
+
     String selectedLanguage = "Thai";
     List<String> item = ["1", "2", "3", "4", "5", "6", "7"];
-    String selectedItem = "1";
 
     return AppBar(
         backgroundColor: Colors.white,
@@ -48,9 +49,14 @@ class _AppBarScreenState extends State<AppBarScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset(
-                'assets/images/networklink_logo.png',
-                width: 74.0,
+              InkWell(
+                onTap: () {
+                  context.pop();
+                },
+                child: Image.asset(
+                  'assets/images/networklink_logo.png',
+                  width: 74.0,
+                ),
               ),
 
               // Left Side Menu
