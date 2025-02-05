@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:widgets_test/screens/homepage.dart';
 import 'package:widgets_test/widgets/appBar.dart';
+import 'package:widgets_test/widgets/leftDrawer.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         path: '/',
         builder: (context, state) => Scaffold(
           backgroundColor: Color(0xFFf5f5f5),
+          drawer: LeftDrawer(),
           appBar: AppBarScreen(),
           body: Center(
             child: const Homepage(),

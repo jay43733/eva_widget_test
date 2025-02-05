@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:widgets_test/models/announcement.dart';
+import 'package:widgets_test/models/language.dart';
 
 class AppBarScreen extends StatefulWidget implements PreferredSizeWidget {
   const AppBarScreen({super.key});
@@ -19,7 +21,6 @@ class _AppBarScreenState extends State<AppBarScreen> {
   void initState() {
     super.initState();
     displayDateNow();
-    print("$dateNumber hereeeeeeeee");
   }
 
   void displayDateNow() {
@@ -33,10 +34,10 @@ class _AppBarScreenState extends State<AppBarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> languages = ["Thai", "English"];
+    // List<String> languages = ["Thai", "English"];
     String selectedLanguage = "Thai";
-    List<int> item = [1, 2, 3, 4, 5, 6, 7];
-    int selectedItem = 1;
+    List<String> item = ["1", "2", "3", "4", "5", "6", "7"];
+    String selectedItem = "1";
 
     return AppBar(
         backgroundColor: Colors.white,
@@ -60,49 +61,87 @@ class _AppBarScreenState extends State<AppBarScreen> {
                     dateNumber,
                     style: TextStyle(fontSize: 14.0),
                   ),
-                  Badge(
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
+
+                  // Notification
+                  PopupMenuButton(
+                    offset: Offset(0, 24.0),
+                    color: Colors.white,
+                    itemBuilder: (BuildContext context) {
+                      return listOfNews.map((Announcement announcement) {
+                        return PopupMenuItem(
+                          value: announcement,
+                          child: SizedBox(
+                            width: 100.0,
+                            child: Text(
+                              announcement.caption,
+                              style: TextStyle(overflow: TextOverflow.ellipsis),
+                              maxLines: 1,
+                            ),
+                          ),
+                        );
+                      }).toList();
+                    },
+                    child: Badge(
+                        offset: Offset(6.0, -4.0),
+                        label: Text(
+                          listOfNews.length.toString(),
+                        ),
+                        child: Icon(
                           Icons.notifications_none_rounded,
                         )),
                   ),
+
+                  // Language
                   DropdownMenu(
+                      menuStyle: MenuStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(Colors.white)),
+                      requestFocusOnTap: false, // Disable typing
+                      enableSearch: false,
                       width: 110.0,
                       onSelected: (value) {
                         setState(() {
-                          selectedLanguage = value!;
+                          selectedLanguage = value! as String;
                         });
                       },
                       inputDecorationTheme:
                           InputDecorationTheme(border: InputBorder.none),
-                      initialSelection: languages.first,
-                      dropdownMenuEntries: [
-                        DropdownMenuEntry(
-                            leadingIcon: Image.asset(
-                              'assets/icons/thailand_flag.png',
-                              height: 22.0,
-                            ),
-                            value: languages.first,
-                            label: languages.first),
-                        DropdownMenuEntry(
-                            leadingIcon: Image.asset(
-                              'assets/icons/uk_flag.png',
-                              height: 22.0,
-                            ),
-                            value: languages.elementAt(1),
-                            label: languages.elementAt(1)),
-                      ]),
-                  Chip(
-                    side: BorderSide(color: Colors.transparent),
-                    label:
-                        Text("Network Link", overflow: TextOverflow.ellipsis),
-                    avatar: CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: Text(
-                        "N",
-                        style: TextStyle(fontSize: 14.0, color: Colors.white),
-                        textAlign: TextAlign.center,
+                      initialSelection: listLanguage.first,
+                      dropdownMenuEntries: listLanguage.map((language) {
+                        return DropdownMenuEntry<Language>(
+                          value: language,
+                          label: language.title,
+                          leadingIcon: Image.asset(
+                            language.imagePath,
+                            width: 22.0,
+                          ),
+                        );
+                      }).toList()),
+
+                  // Username
+                  PopupMenuButton<String>(
+                    offset: Offset(0, 36.0),
+                    color: Colors.white,
+                    itemBuilder: (BuildContext context) {
+                      return item.map((String option) {
+                        return PopupMenuItem<String>(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList();
+                    },
+                    child: Chip(
+                      color: WidgetStatePropertyAll(Colors.transparent),
+                      side: BorderSide(color: Colors.transparent),
+                      label:
+                          Text("Network Link", overflow: TextOverflow.ellipsis),
+                      avatar: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        child: Text(
+                          "N",
+                          style: TextStyle(fontSize: 14.0, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
