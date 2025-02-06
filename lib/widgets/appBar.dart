@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:widgets_test/constants/dropdownMenuUser.dart';
 import 'package:widgets_test/models/announcement.dart';
 import 'package:widgets_test/models/language.dart';
 
@@ -38,9 +39,9 @@ class _AppBarScreenState extends State<AppBarScreen> {
     // List<String> languages = ["Thai", "English"];
 
     String selectedLanguage = "Thai";
-    List<String> item = ["1", "2", "3", "4", "5", "6", "7"];
 
     return AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 4.0,
         shadowColor: Colors.black45,
@@ -51,6 +52,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
             children: [
               InkWell(
                 onTap: () {
+                  Scaffold.of(context).closeDrawer();
                   context.pop();
                 },
                 child: Image.asset(
@@ -129,7 +131,7 @@ class _AppBarScreenState extends State<AppBarScreen> {
                     offset: Offset(0, 36.0),
                     color: Colors.white,
                     itemBuilder: (BuildContext context) {
-                      return item.map((String option) {
+                      return dropDownMenuUser.map((String option) {
                         return PopupMenuItem<String>(
                           value: option,
                           child: Text(option),

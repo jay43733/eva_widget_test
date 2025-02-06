@@ -9,12 +9,13 @@ import 'package:widgets_test/screens/mapPage.dart';
 import 'package:widgets_test/screens/messageManagementPage.dart';
 import 'package:widgets_test/screens/reportPage.dart';
 import 'package:widgets_test/widgets/appBar.dart';
-import 'package:widgets_test/widgets/leftDrawer.dart';
+import 'package:widgets_test/widgets/leftDrawerBanner.dart';
 
 void main() {
   runApp(MyApp());
 }
 
+// Used For Horizontal Scrolling in Desktop
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
@@ -25,7 +26,6 @@ class CustomScrollBehavior extends MaterialScrollBehavior {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   final GoRouter _router = GoRouter(
     initialLocation: '/',
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           path: '/',
           builder: (context, state) => Scaffold(
                 backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawer(),
+                drawer: LeftDrawerBanner(),
                 appBar: AppBarScreen(),
                 body: Center(
                   child: HomePage(),
@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
               path: 'banner',
               builder: (context, state) => Scaffold(
                 backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawer(),
                 appBar: AppBarScreen(),
                 body: Center(
                   child: const BannerPage(),
@@ -56,7 +55,6 @@ class MyApp extends StatelessWidget {
               path: 'report',
               builder: (context, state) => Scaffold(
                 backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawer(),
                 appBar: AppBarScreen(),
                 body: Center(
                   child: const ReportPage(),
@@ -67,7 +65,6 @@ class MyApp extends StatelessWidget {
               path: 'message_manage',
               builder: (context, state) => Scaffold(
                 backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawer(),
                 appBar: AppBarScreen(),
                 body: Center(
                   child: const MessageManagementPage(),
@@ -78,7 +75,6 @@ class MyApp extends StatelessWidget {
               path: 'location',
               builder: (context, state) => Scaffold(
                 backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawer(),
                 appBar: AppBarScreen(),
                 body: Center(
                   child: const LocationPage(),
@@ -89,7 +85,6 @@ class MyApp extends StatelessWidget {
               path: 'dashboard',
               builder: (context, state) => Scaffold(
                 backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawer(),
                 appBar: AppBarScreen(),
                 body: Center(
                   child: const DashboardPage(),
@@ -100,7 +95,6 @@ class MyApp extends StatelessWidget {
               path: 'map',
               builder: (context, state) => Scaffold(
                 backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawer(),
                 appBar: AppBarScreen(),
                 body: Center(
                   child: const MapPage(),
@@ -117,7 +111,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Eva Project Demo',
       theme: ThemeData(
         iconTheme: IconThemeData(color: Colors.black),
         useMaterial3: true,

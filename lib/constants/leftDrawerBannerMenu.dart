@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 
-class LeftDrawerMenu {
+class LeftDrawerBannerMenu {
   final String title;
   final IconData? icon;
-  final String route;
+  final String? route;
   final String? subtitle;
 
-  LeftDrawerMenu(
-      {required this.route, required this.title, this.icon, this.subtitle});
+  LeftDrawerBannerMenu(
+      {this.route, required this.title, this.icon, this.subtitle});
 }
 
-List<LeftDrawerMenu> listOfLeftDrawerMenu = [
-  LeftDrawerMenu(
+List<LeftDrawerBannerMenu> listOfLeftDrawerBannerMenu = [
+  LeftDrawerBannerMenu(
     title: "ป้ายประชาสัมพันธ์",
-    route: "banner",
     icon: Icons.panorama_wide_angle_rounded,
   ),
-  LeftDrawerMenu(
+  LeftDrawerBannerMenu(
       title: "ที่ตั้งอุปกรณ์", route: "location", subtitle: "ทช. ระยอง"),
-  LeftDrawerMenu(
+  LeftDrawerBannerMenu(
       title: "จัดการป้ายประชาสัมพันธ์",
       route: "message_manage",
       icon: Icons.settings,
       subtitle: "ข้อความ"),
-  LeftDrawerMenu(
+  LeftDrawerBannerMenu(
       title: "รายงาน", route: "report", icon: Icons.insert_drive_file),
-  LeftDrawerMenu(title: "แดชบอร์ด", route: "dashboard", icon: Icons.timeline),
-  LeftDrawerMenu(
+  LeftDrawerBannerMenu(
+      title: "แดชบอร์ด", route: "dashboard", icon: Icons.timeline),
+  LeftDrawerBannerMenu(
       title: "แผนที่",
       route: "map",
       icon: Icons.map,

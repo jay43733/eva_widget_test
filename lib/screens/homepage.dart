@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:number_paginator/number_paginator.dart';
 import 'package:widgets_test/models/announcement.dart';
 import 'package:widgets_test/models/main_menu.dart';
+import 'package:widgets_test/widgets/listNewsCard.dart';
+
+import '../widgets/listMenuCard.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -10,25 +15,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Element for Pagination
+  static const int itemPerPage = 6;
+  int _currentPage = 0;
+  List<Announcement> get getPaginatedNews {
+    int startIndex = _currentPage * itemPerPage;
+    int endIndex = startIndex + itemPerPage;
+    return listOfNews.sublist(startIndex, endIndex.clamp(0, listOfNews.length));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Check Route
+    String routeNow =
+        GoRouter.of(context).routeInformationProvider!.value.uri.toString();
+    print("Locationnnnnnnnnnnnnnnnnn: $routeNow");
+
     return SafeArea(
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
           _buildMainMenu(),
-          _buildListOfNews(),
+          _buildListOfNews(screenWidth),
         ],
       ),
     );
   }
 
   Widget _buildMainMenu() {
-    Map<int, bool> isMouseEnterOnCard = {};
-
     if (listMenu.isEmpty) {
       return Center(
-        child: Text("No List Menu"),
+        child: Text("No List Menu "),
       );
     }
 
@@ -40,123 +59,79 @@ class _HomePageState extends State<HomePage> {
         scrollDirection: Axis.horizontal,
         itemCount: listMenu.length,
         itemBuilder: (context, index) {
-          isMouseEnterOnCard[index] = isMouseEnterOnCard[index] ?? false;
-
-          return Stack(
-            children: [
-              MouseRegion(
-                onEnter: (event) {
-                  setState(() {
-                    isMouseEnterOnCard[index] = true;
-                  });
-                  print("Enterrrrr");
-                  print(isMouseEnterOnCard);
-                },
-                onExit: (event) {
-                  print("Exxxxxxxxxxxxx");
-                  setState(() {
-                    isMouseEnterOnCard[index] = false;
-                  });
-                  print("$isMouseEnterOnCard, exit");
-                },
-                child: Container(
-                  width: 200.0,
-                  child: Card(
-                    color: isMouseEnterOnCard[index]!
-                        ? Colors.amber
-                        : Colors.white,
-                    shape: ContinuousRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            listMenu[index].icon,
-                            size: 80.0,
-                          ),
-                          Text(
-                            listMenu[index].title,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                right: 10.0,
-                top: 8.0,
-                child: Icon(
-                  Icons.favorite_border,
-                  size: 20.0,
-                ),
-              )
-            ],
-          );
+          final item = listMenu[index];
+          return listMenuCard(item: item);
         },
       ),
     );
   }
 
-  Widget _buildListOfNews() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-            width: double.infinity,
-            child: Column(
-              children: [
-                //Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "ข่าวประกาศจาก Network link",
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                    Icon(
-                      Icons.favorite_border,
-                      size: 22.0,
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                //List of News
-                SizedBox(
-                  height: 440.0,
-                  child: ListView.builder(
-                    itemCount: listOfNews.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: EdgeInsets.only(bottom: 14.0),
-                        shadowColor: Colors.black38,
-                        elevation: 2.0,
-                        color: Color(0xFFf5f5f5),
-                        shape: ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            "${listOfNews[index].id}. ${listOfNews[index].caption}",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        ),
-                      );
-                    },
+  Widget _buildListOfNews(screenWidth) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+          width: double.infinity,
+          child: Column(
+            children: [
+              //Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "ข่าวประกาศจาก Network link",
+                    style: TextStyle(fontSize: 16.0),
                   ),
-                )
-              ],
-            )),
-      ),
+                  Icon(
+                    Icons.favorite_border,
+                    size: 22.0,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              //List of News
+              SizedBox(
+                height: 400.0,
+                child: ListView.builder(
+                  itemCount: getPaginatedNews.length,
+                  itemBuilder: (context, index) {
+                    final item = getPaginatedNews[index];
+                    return listNewsCard(item: item);
+                  },
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 214.0),
+                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(
+                        width: 0.5,
+                        color: Color.fromARGB(82, 82, 82, 2),
+                        strokeAlign: BorderSide.strokeAlignCenter)),
+                child: NumberPaginator(
+                  numberPages: (listOfNews.length / itemPerPage).ceil(),
+                  initialPage: _currentPage,
+                  onPageChange: (int index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  config: NumberPaginatorUIConfig(
+                      buttonSelectedBackgroundColor: Color(0xFFb91c1c),
+                      buttonTextStyle: TextStyle(color: Color(0xFF333333)),
+                      buttonShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0.0))),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
