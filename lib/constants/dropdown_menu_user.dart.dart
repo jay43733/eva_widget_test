@@ -1,4 +1,4 @@
-List<String> dropDownMenuUser = [
+List<String> dropdownMenuUser = [
   "Favorite",
   "CMS",
   "User Department",

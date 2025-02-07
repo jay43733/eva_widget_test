@@ -1,72 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:number_paginator/number_paginator.dart';
+import 'package:provider/provider.dart';
+import 'package:widgets_test/controllers/announcement_controller.dart';
+import 'package:widgets_test/controllers/home_controller.dart';
 import 'package:widgets_test/models/announcement.dart';
-import 'package:widgets_test/models/main_menu.dart';
-import 'package:widgets_test/widgets/listNewsCard.dart';
+import 'package:widgets_test/widgets/list_news_card.dart';
 
-import '../widgets/listMenuCard.dart';
-
-class HomePage extends StatefulWidget {
-  HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  // Element for Pagination
-  static const int itemPerPage = 6;
-  int _currentPage = 0;
-  List<Announcement> get getPaginatedNews {
-    int startIndex = _currentPage * itemPerPage;
-    int endIndex = startIndex + itemPerPage;
-    return listOfNews.sublist(startIndex, endIndex.clamp(0, listOfNews.length));
-  }
+class HomeNewsList extends StatelessWidget {
+  const HomeNewsList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final homeController = Provider.of<HomeController>(context);
+    final announcementController = Provider.of<AnnouncementController>(context);
+    List<Announcement> paginatedNews = homeController.getPaginatedNews;
 
-    // Check Route
-    String routeNow =
-        GoRouter.of(context).routeInformationProvider!.value.uri.toString();
-    print("Locationnnnnnnnnnnnnnnnnn: $routeNow");
-
-    return SafeArea(
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          _buildMainMenu(),
-          _buildListOfNews(screenWidth),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMainMenu() {
-    if (listMenu.isEmpty) {
-      return Center(
-        child: Text("No List Menu "),
-      );
-    }
-
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-      width: double.infinity,
-      height: 220.0,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: listMenu.length,
-        itemBuilder: (context, index) {
-          final item = listMenu[index];
-          return listMenuCard(item: item);
-        },
-      ),
-    );
-  }
-
-  Widget _buildListOfNews(screenWidth) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Container(
@@ -97,9 +45,9 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 400.0,
                 child: ListView.builder(
-                  itemCount: getPaginatedNews.length,
+                  itemCount: paginatedNews.length,
                   itemBuilder: (context, index) {
-                    final item = getPaginatedNews[index];
+                    final item = paginatedNews[index];
                     return listNewsCard(item: item);
                   },
                 ),
@@ -116,12 +64,11 @@ class _HomePageState extends State<HomePage> {
                         color: Color.fromARGB(82, 82, 82, 2),
                         strokeAlign: BorderSide.strokeAlignCenter)),
                 child: NumberPaginator(
-                  numberPages: (listOfNews.length / itemPerPage).ceil(),
-                  initialPage: _currentPage,
+                  numberPages:
+                      (announcementController.listOfNews.length / HomeController.itemPerPage).ceil(),
+                  initialPage: homeController.currentPage,
                   onPageChange: (int index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
+                    homeController.changePage(index);
                   },
                   config: NumberPaginatorUIConfig(
                       buttonSelectedBackgroundColor: Color(0xFFb91c1c),

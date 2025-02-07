@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:widgets_test/models/main_menu.dart';
 
-class listMenuCard extends StatefulWidget {
-  listMenuCard({
+class ListMenuCard extends StatefulWidget {
+  ListMenuCard({
     super.key,
     required this.item,
   });
@@ -10,10 +10,10 @@ class listMenuCard extends StatefulWidget {
   final MainMenu item;
 
   @override
-  State<listMenuCard> createState() => _listMenuCardState();
+  State<ListMenuCard> createState() => _ListMenuCardState();
 }
 
-class _listMenuCardState extends State<listMenuCard> {
+class _ListMenuCardState extends State<ListMenuCard> {
   bool _isListMenuCardHovered = false;
 
   @override

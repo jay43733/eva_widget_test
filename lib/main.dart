@@ -1,122 +1,54 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:widgets_test/screens/bannerPage.dart';
-import 'package:widgets_test/screens/dashboardPage.dart';
-import 'package:widgets_test/screens/homePage.dart';
-import 'package:widgets_test/screens/locationPage.dart';
-import 'package:widgets_test/screens/mapPage.dart';
-import 'package:widgets_test/screens/messageManagementPage.dart';
-import 'package:widgets_test/screens/reportPage.dart';
-import 'package:widgets_test/widgets/appBar.dart';
-import 'package:widgets_test/widgets/leftDrawerBanner.dart';
+import 'package:provider/provider.dart';
+import 'package:widgets_test/app.dart';
+import 'package:widgets_test/constants/custom_scroll_behavior.dart';
+import 'package:widgets_test/controllers/announcement_controller.dart';
+import 'package:widgets_test/controllers/app_bar_controller.dart';
+import 'package:widgets_test/controllers/main_menu_controller.dart';
+import 'package:widgets_test/controllers/home_controller.dart';
 
+//Focus on Entry & State Management.
 void main() {
-  runApp(MyApp());
-}
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => AnnouncementController()),
+      // Dependency Injection
+      // ChangeNotifierProxyProvider is a special type of Provider that depends on another provider. It allows a ChangeNotifier class to receive and update data from another ChangeNotifier in the widget tree.
+      //- When one provider (A) depends on another provider (B).
+      // - When you want Provider B’s updates to automatically affect Provider A.
+      // - When you need to pass data dynamically from one controller to another.
 
-// Used For Horizontal Scrolling in Desktop
-class CustomScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-      };
+      ChangeNotifierProxyProvider<AnnouncementController, HomeController>(
+          create: (context) => HomeController(announcementController: null),
+          update: (context, announcementController, previousHomeController) {
+            if (previousHomeController == null) {
+              return HomeController(
+                  announcementController: announcementController);
+            }
+            previousHomeController.updateController(announcementController);
+            return previousHomeController;
+          }),
+
+      ChangeNotifierProvider(create: (_) => AppBarController()),
+      ChangeNotifierProvider(create: (_) => MainMenuController()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
-  final GoRouter _router = GoRouter(
-    initialLocation: '/',
-    routes: [
-      GoRoute(
-          path: '/',
-          builder: (context, state) => Scaffold(
-                backgroundColor: Color(0xFFf5f5f5),
-                drawer: LeftDrawerBanner(),
-                appBar: AppBarScreen(),
-                body: Center(
-                  child: HomePage(),
-                ),
-              ),
-          routes: [
-            GoRoute(
-              path: 'banner',
-              builder: (context, state) => Scaffold(
-                backgroundColor: Color(0xFFf5f5f5),
-                appBar: AppBarScreen(),
-                body: Center(
-                  child: const BannerPage(),
-                ),
-              ),
-            ),
-            GoRoute(
-              path: 'report',
-              builder: (context, state) => Scaffold(
-                backgroundColor: Color(0xFFf5f5f5),
-                appBar: AppBarScreen(),
-                body: Center(
-                  child: const ReportPage(),
-                ),
-              ),
-            ),
-            GoRoute(
-              path: 'message_manage',
-              builder: (context, state) => Scaffold(
-                backgroundColor: Color(0xFFf5f5f5),
-                appBar: AppBarScreen(),
-                body: Center(
-                  child: const MessageManagementPage(),
-                ),
-              ),
-            ),
-            GoRoute(
-              path: 'location',
-              builder: (context, state) => Scaffold(
-                backgroundColor: Color(0xFFf5f5f5),
-                appBar: AppBarScreen(),
-                body: Center(
-                  child: const LocationPage(),
-                ),
-              ),
-            ),
-            GoRoute(
-              path: 'dashboard',
-              builder: (context, state) => Scaffold(
-                backgroundColor: Color(0xFFf5f5f5),
-                appBar: AppBarScreen(),
-                body: Center(
-                  child: const DashboardPage(),
-                ),
-              ),
-            ),
-            GoRoute(
-              path: 'map',
-              builder: (context, state) => Scaffold(
-                backgroundColor: Color(0xFFf5f5f5),
-                appBar: AppBarScreen(),
-                body: Center(
-                  child: const MapPage(),
-                ),
-              ),
-            ),
-          ]),
-      // Add more routes here as needed
-    ],
-  );
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
+      home: App(),
       debugShowCheckedModeBanner: false,
       title: 'Eva Project Demo',
       theme: ThemeData(
         iconTheme: IconThemeData(color: Colors.black),
         useMaterial3: true,
       ),
-      routerConfig: _router,
       scrollBehavior: CustomScrollBehavior(),
     );
   }
