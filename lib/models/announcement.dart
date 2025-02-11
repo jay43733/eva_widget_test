@@ -1,5 +1,3 @@
-import 'package:lorem_ipsum/lorem_ipsum.dart';
-
 class Announcement {
   final int id;
   final String caption;
