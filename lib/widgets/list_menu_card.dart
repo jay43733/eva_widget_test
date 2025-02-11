@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:widgets_test/controllers/main_menu_controller.dart';
 import 'package:widgets_test/models/main_menu.dart';
+import 'package:widgets_test/theme/color.dart';
 
-class listMenuCard extends StatefulWidget {
-  listMenuCard({
+class ListMenuCard extends StatefulWidget {
+  ListMenuCard({
     super.key,
     required this.item,
   });
@@ -10,14 +13,16 @@ class listMenuCard extends StatefulWidget {
   final MainMenu item;
 
   @override
-  State<listMenuCard> createState() => _listMenuCardState();
+  State<ListMenuCard> createState() => _ListMenuCardState();
 }
 
-class _listMenuCardState extends State<listMenuCard> {
+class _ListMenuCardState extends State<ListMenuCard> {
   bool _isListMenuCardHovered = false;
+  Map<String, bool> clickedMenu = {};
 
   @override
   Widget build(BuildContext context) {
+    final mainMenuController = Provider.of<MainMenuController>(context);
     return Stack(
       children: [
         SizedBox(
@@ -29,25 +34,24 @@ class _listMenuCardState extends State<listMenuCard> {
                   _isListMenuCardHovered = value;
                 });
               },
-              onTap: () {
-                if (widget.item.haveDrawer == true)
-                  Scaffold.of(context).openDrawer();
-              },
+              onTap: mainMenuController.openSidebar,
               child: Card(
                 elevation: 2.0,
-                color: _isListMenuCardHovered ? Colors.white70 : Colors.white,
+                color: _isListMenuCardHovered
+                    ? AppColor.cardHover
+                    : AppColor.cardColor,
                 shape: ContinuousRectangleBorder(
                     side: BorderSide(
                         color: Color.fromARGB(82, 82, 82, 2), width: 0.5),
                     borderRadius: BorderRadius.circular(16.0)),
                 child: Padding(
-                  padding: const EdgeInsets.all(18.0),
+                  padding: const EdgeInsets.all(14.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         widget.item.icon,
-                        size: 80.0,
+                        size: 64.0,
                       ),
                       Text(
                         widget.item.title,
@@ -61,8 +65,8 @@ class _listMenuCardState extends State<listMenuCard> {
           ),
         ),
         Positioned(
-          right: 10.0,
-          top: 8.0,
+          right: 6.0,
+          top: 2.0,
           child: IconButton(
             onPressed: () {
               setState(() {

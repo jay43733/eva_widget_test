@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class MainMenu {
   final String title;
   final IconData icon;
-  bool? haveDrawer;
+  bool isSidebarOpen;
   bool IsFavorite;
 
   MainMenu(
       {required this.title,
       required this.icon,
-      this.haveDrawer = false,
+      this.isSidebarOpen = false,
       required this.IsFavorite});
 }
 
@@ -17,7 +17,7 @@ List<MainMenu> listMenu = [
   MainMenu(
       title: "ป้ายประชาสัมพันธ์",
       icon: Icons.announcement_rounded,
-      haveDrawer: true,
+      isSidebarOpen: true,
       IsFavorite: false),
   MainMenu(
     title: "ป้ายข้อความกำกับช่องทางเดินรถ",

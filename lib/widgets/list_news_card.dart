@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets_test/models/announcement.dart';
+import 'package:widgets_test/theme/color.dart';
 
 class listNewsCard extends StatelessWidget {
   const listNewsCard({
@@ -13,7 +14,7 @@ class listNewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.only(bottom: 14.0),
-      shadowColor: Colors.black38,
+      shadowColor: AppColor.mainMenuShadow,
       elevation: 2.0,
       color: Color(0xFFf5f5f5),
       shape:
