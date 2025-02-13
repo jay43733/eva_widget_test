@@ -6,6 +6,7 @@ import 'package:widgets_test/controllers/announcement_controller.dart';
 import 'package:widgets_test/controllers/app_bar_controller.dart';
 import 'package:widgets_test/controllers/main_menu_controller.dart';
 import 'package:widgets_test/controllers/home_controller.dart';
+import 'package:widgets_test/controllers/report_data_controller.dart';
 import 'package:widgets_test/theme/color.dart';
 
 //Focus on Entry & State Management.
@@ -32,6 +33,7 @@ void main() {
 
       ChangeNotifierProvider(create: (_) => AppBarController()),
       ChangeNotifierProvider(create: (_) => MainMenuController()),
+      ChangeNotifierProvider(create: (_) => ReportDataController())
     ],
     child: const MyApp(),
   ));

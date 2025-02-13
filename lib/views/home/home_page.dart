@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:widgets_test/controllers/main_menu_controller.dart';
+import 'package:widgets_test/views/common/collapsed_sidebar_menu.dart';
 import 'package:widgets_test/views/home/home_menu.dart';
 import 'package:widgets_test/views/home/home_news_list.dart';
 import 'package:widgets_test/views/common/sidebar_menu.dart';
@@ -26,11 +27,12 @@ class _HomePageState extends State<HomePage> {
 
     return SafeArea(
       child: Flex(
-        spacing: 20.0,
+        spacing: mainMenuController.isSidebarOpened ? 20.0 : 10.0,
         direction: Axis.horizontal,
         children: [
-          if (mainMenuController.isSidebarOpened)
-            Expanded(flex: 1, child: SidebarMenu()),
+          mainMenuController.isSidebarOpened
+              ? Expanded(flex: 1, child: SidebarMenu())
+              : Expanded(flex: 0, child: CollapsedSidebarMenu()),
           Expanded(
             flex: 2,
             child: SizedBox(

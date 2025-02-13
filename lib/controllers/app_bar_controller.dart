@@ -23,7 +23,7 @@ class AppBarController extends ChangeNotifier {
 
   void displayDateNow() {
     final now = DateTime.now();
-    final dateFormat = DateFormat("dd/MM/yyyy");
+    final dateFormat = DateFormat("MM/dd/yyyy");
     final timeFormat = DateFormat('HH:mm:ss a'); //a is an indicator for AM/PM
     dateNumber = "${dateFormat.format(now)}, ${timeFormat.format(now)}";
     notifyListeners();

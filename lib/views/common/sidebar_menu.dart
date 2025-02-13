@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:widgets_test/constants/left_drawer_banner_menu.dart';
+import 'package:widgets_test/controllers/main_menu_controller.dart';
 import 'package:widgets_test/theme/color.dart';
 
 class SidebarMenu extends StatefulWidget {
@@ -17,18 +19,33 @@ class _SidebarMenuState extends State<SidebarMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final mainMenuController = Provider.of<MainMenuController>(context);
     final routeNow =
         GoRouter.of(context).routeInformationProvider.value.uri.toString();
     print("$routeNow heree");
     return Container(
-      color: AppColor.blackAlpha45Primary,
-      child: ListView(
-        padding: EdgeInsets.symmetric(vertical: 40.0),
-        children: listOfLeftDrawerBannerMenu
-            .map((menu) => _buildExpansionTile(menu, routeNow))
-            .toList(),
-      ),
-    );
+        padding: EdgeInsets.symmetric(
+          vertical: 20.0,
+        ),
+        color: AppColor.blackAlpha45Primary,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              onPressed: mainMenuController.setSidebarStatus,
+              icon: Icon(
+                Icons.close_fullscreen_outlined,
+                size: 24.0,
+                color: AppColor.blackPrimary,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          ...listOfLeftDrawerBannerMenu
+              .map((menu) => _buildExpansionTile(menu, routeNow)),
+        ]));
   }
 
   /// **Recursive function to render unlimited levels of `ExpansionTile`**
