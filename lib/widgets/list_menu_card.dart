@@ -34,7 +34,7 @@ class _ListMenuCardState extends State<ListMenuCard> {
                   _isListMenuCardHovered = value;
                 });
               },
-              onTap: mainMenuController.openSidebar,
+              onTap: mainMenuController.setSidebarStatus,
               child: Card(
                 elevation: 2.0,
                 color: _isListMenuCardHovered

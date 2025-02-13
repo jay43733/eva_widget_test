@@ -4,7 +4,7 @@ import 'package:widgets_test/models/main_menu.dart';
 class MainMenuController extends ChangeNotifier {
   bool isSidebarOpened = false;
 
-  void openSidebar() {
+  void setSidebarStatus() {
     isSidebarOpened = !isSidebarOpened;
     notifyListeners();
   }

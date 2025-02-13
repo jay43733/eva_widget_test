@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:widgets_test/constants/dropdown_menu_user.dart.dart';
+import 'package:widgets_test/constants/dropdown_menu_user.dart';
 import 'package:widgets_test/controllers/announcement_controller.dart';
 import 'package:widgets_test/controllers/app_bar_controller.dart';
 import 'package:widgets_test/controllers/main_menu_controller.dart';
@@ -33,7 +33,7 @@ class AppBarScreen extends StatelessWidget implements PreferredSizeWidget {
           children: [
             InkWell(
               onTap: () {
-                mainMenuController.openSidebar();
+                mainMenuController.setSidebarStatus();
                 context.pop();
               },
               child: Image.asset(

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:widgets_test/controllers/report_data_controller.dart';
 import 'package:widgets_test/theme/color.dart';
+import 'package:widgets_test/widgets/custom_dropdown_menu.dart';
+import 'package:widgets_test/widgets/date_picker.dart';
 
 class ReportData extends StatefulWidget {
   const ReportData({super.key});
@@ -12,6 +16,9 @@ class ReportData extends StatefulWidget {
 class _ReportDataState extends State<ReportData> {
   @override
   Widget build(BuildContext context) {
+    final reportDataController = Provider.of<ReportDataController>(context);
+    List<String> options = ["option1", "options2"];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Expanded(
@@ -19,8 +26,9 @@ class _ReportDataState extends State<ReportData> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               color: AppColor.whitePrimary),
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //Header
               Row(
@@ -41,8 +49,6 @@ class _ReportDataState extends State<ReportData> {
               SizedBox(
                 height: 20.0,
               ),
-
-              // Many CTAs
 
               //Export Buttons
               Row(
@@ -103,38 +109,40 @@ class _ReportDataState extends State<ReportData> {
                       Row(
                         spacing: 10.0,
                         children: [
-                          DropdownMenu(
-                              requestFocusOnTap:
-                                  false, // Cannot Type anything in Input
+                          CustomDropdownMenu(
                               width: 146.0,
-                              hintText: "Acting type",
-                              dropdownMenuEntries: [
-                                DropdownMenuEntry(
-                                    value: "option1", label: "option1"),
-                                DropdownMenuEntry(
-                                    value: "option2", label: "option2"),
-                              ]),
-                          DropdownMenu(
-                              requestFocusOnTap: false,
+                              hintText: "Acting Type",
+                              menuEntry: options),
+                          CustomDropdownMenu(
                               width: 180.0,
                               hintText: "Installation Site",
-                              dropdownMenuEntries: [
-                                DropdownMenuEntry(
-                                    value: "option1", label: "option1"),
-                                DropdownMenuEntry(
-                                    value: "option2", label: "option2"),
-                              ]),
+                              menuEntry: options),
                         ],
                       )
                     ],
                   )
                 ],
               ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Column(
+                spacing: 10.0,
+                children: [
+                  DatePicker(
+                    hintText: "Start Date:",
+                    resultDate: reportDataController.startDate,
+                    setTime: reportDataController.setStartDate,
+                  ),
+                  DatePicker(
+                    hintText: "End Date:",
+                    resultDate: reportDataController.endDate,
+                    setTime: reportDataController.setEndDate,
+                  )
+                ],
+              ),
 
-
-              // Date & Time Picker 
-              
-
+              // Date & Time Picker
             ],
           ),
         ),
