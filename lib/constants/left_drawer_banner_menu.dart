@@ -51,7 +51,7 @@ List<LeftDrawerBannerMenu> listOfLeftDrawerBannerMenu = [
           ),
         ]),
       ],
-      route: "location"),
+      route: ""),
   LeftDrawerBannerMenu(
       title: "จัดการป้ายประชาสัมพันธ์",
       route: "message_manage",
