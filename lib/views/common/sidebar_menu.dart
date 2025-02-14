@@ -23,29 +23,33 @@ class _SidebarMenuState extends State<SidebarMenu> {
     final routeNow =
         GoRouter.of(context).routeInformationProvider.value.uri.toString();
     print("$routeNow heree");
-    return Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 20.0,
-        ),
-        color: AppColor.blackAlpha45Primary,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(
-              onPressed: mainMenuController.setSidebarStatus,
-              icon: Icon(
-                Icons.close_fullscreen_outlined,
-                size: 24.0,
+    return Drawer(
+        backgroundColor: AppColor.blackAlpha45Primary,
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 20.0,
+          ),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: IconButton(
                 color: AppColor.blackPrimary,
+                onPressed: mainMenuController.setSidebarStatus,
+                icon: Icon(
+                  Icons.close_fullscreen_outlined,
+                  size: 24.0,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          ...listOfLeftDrawerBannerMenu
-              .map((menu) => _buildExpansionTile(menu, routeNow)),
-        ]));
+            SizedBox(
+              height: 10.0,
+            ),
+            ...listOfLeftDrawerBannerMenu
+                .map((menu) => _buildExpansionTile(menu, routeNow)),
+          ]),
+        ));
   }
 
   /// **Recursive function to render unlimited levels of `ExpansionTile`**
@@ -60,17 +64,17 @@ class _SidebarMenuState extends State<SidebarMenu> {
               onExit: (_) {
                 tileColor.value = Colors.transparent;
                 hoveredItem[item.title] = false;
-                print("$hoveredItem Hover Exit");
-                print("$expandedItem Expand Exit");
               },
-              onHover: (_) {
+              onEnter: (_) {
                 tileColor.value = AppColor.redButton;
                 hoveredItem[item.title] = true;
-                print("$hoveredItem Hover Hover");
-                print("$expandedItem Expand Hover");
               },
               child: Container(
-                color: color,
+                color: "/${item.route}" == routeNow
+                    ? AppColor.redButton
+                    : hoveredItem[item.title] == true
+                        ? AppColor.redButton.withValues(alpha: 0.3)
+                        : Colors.transparent,
                 child: ExpansionTile(
                   onExpansionChanged: (isItemExpanded) {
                     setState(() {
@@ -78,12 +82,14 @@ class _SidebarMenuState extends State<SidebarMenu> {
                     });
                     print("$expandedItem sssssssssssssss");
                   },
-                  iconColor: hoveredItem[item.title] == true
+                  iconColor: "/${item.route}" == routeNow
                       ? AppColor.whitePrimary
-                      : (expandedItem[item.title] == true &&
-                              item.route == routeNow)
+                      : hoveredItem[item.title] == true
                           ? AppColor.whitePrimary
-                          : AppColor.blackPrimary,
+                          : (expandedItem[item.title] == true &&
+                                  item.route == routeNow)
+                              ? AppColor.whitePrimary
+                              : AppColor.blackPrimary,
                   collapsedIconColor: hoveredItem[item.title] == true
                       ? AppColor.whitePrimary
                       : (expandedItem[item.title] == true &&
@@ -99,15 +105,22 @@ class _SidebarMenuState extends State<SidebarMenu> {
                     item.title,
                     style: TextStyle(
                         fontSize: 14.0,
-                        color: hoveredItem[item.title] == true
+                        color: "/${item.route}" == routeNow
                             ? AppColor.whitePrimary
-                            : (expandedItem[item.title] == true &&
-                                    item.route == routeNow)
+                            : hoveredItem[item.title] == true
                                 ? AppColor.whitePrimary
-                                : AppColor.blackPrimary),
+                                : (expandedItem[item.title] == true &&
+                                        item.route == routeNow)
+                                    ? AppColor.whitePrimary
+                                    : AppColor.blackPrimary),
                   ),
                   leading: Icon(
                     item.icon,
+                    color: "/${item.route}" == routeNow
+                        ? AppColor.whitePrimary
+                        : hoveredItem[item.title] == true
+                            ? AppColor.whitePrimary
+                            : AppColor.blackPrimary,
                     size: 22.0,
                   ),
                   children: item.submenu!
@@ -118,33 +131,47 @@ class _SidebarMenuState extends State<SidebarMenu> {
               ),
             );
           });
+
+      // });
     } else {
-      return MouseRegion(
-        onHover: (_) => hoveredList[item.title] = true,
-        onExit: (_) => hoveredList[item.title] = false,
-        child: Container(
-          color: "/${item.route}" == routeNow
-              ? AppColor.redButton
-              : Colors.transparent,
+      return Material(
+        color: "/${item.route}" == routeNow
+            ? AppColor.redButton
+            : Colors.transparent,
+        child: MouseRegion(
+          onEnter: (_) {
+            setState(() {
+              hoveredList[item.title] = true;
+            });
+          },
+          onExit: (_) {
+            setState(() {
+              hoveredList[item.title] = false;
+            });
+          },
           child: ListTile(
+            hoverColor: AppColor.redButton.withValues(alpha: 0.3),
             title: Text(
               item.title,
               style: TextStyle(fontSize: 14.0),
             ),
-            textColor: "/${item.route}" == routeNow
+            textColor: hoveredList[item.title] == true
                 ? AppColor.whitePrimary
-                : AppColor.blackPrimary,
+                : "/${item.route}" == routeNow
+                    ? AppColor.whitePrimary
+                    : AppColor.blackPrimary,
             leading: item.icon != null
                 ? Icon(
                     item.icon,
                     color: "/${item.route}" == routeNow
                         ? AppColor.whitePrimary
-                        : AppColor.blackPrimary,
+                        : hoveredList[item.title] == true
+                            ? AppColor.whitePrimary
+                            : AppColor.blackPrimary,
                   )
                 : null,
             onTap: () {
               if (item.route != null) {
-                print("Navigate to: ${item.route}");
                 context.go("/${item.route}");
               }
             },
